@@ -12,12 +12,12 @@ WHITE = display.create_pen(255, 255, 255)
 # Paddle settings
 paddle_height = 40
 paddle_width = 5
-paddle_speed = 5
+paddle_speed = 10
 
 # Ball settings
 ball_size = 5
-ball_speed_x = 3
-ball_speed_y = 2
+ball_speed_x = 8
+ball_speed_y = 8
 
 # Paddle positions (left and right walls)
 left_paddle_y = 100
@@ -43,7 +43,7 @@ button_Y = Pin(15, Pin.IN, Pin.PULL_UP)  # Move right paddle down (2-player mode
 player_mode = 1  # Default to 1-player mode
 
 # AI settings (used only in 1-player mode)
-ai_speed = 3  # Speed of AI movement
+ai_speed = 5  # Speed of AI movement
 
 # X + Y button hold tracking
 exit_hold_start = 0
