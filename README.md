@@ -2,7 +2,7 @@
 
 ![ISS Tracker](https://github.com/holmesha/ISS_tracker/blob/main/IMG_6613.jpg)
 
-This project combines **real-time ISS tracking** with a **classic Pong game**, running on the **Pimoroni Pico Display Pack 2.8"**.  
+This project combines **real-time ISS tracking** with a **Pong game**, running on the **Pimoroni Pico Display Pack 2.8"**.  
 
 Track the **International Space Station's position** on a **world map** and switch to **Pong** for a quick game—all controlled using the buttons on the display!  
 
@@ -21,7 +21,7 @@ Track the **International Space Station's position** on a **world map** and swit
 - **Path Memory:** Tracks and connects up to **50 past positions**.  
 
 ### Pong Game:
-- **Classic Pong Gameplay:** Paddle movement, scoring, and AI opponent.  
+- **Classic Pong Gameplay:** Paddle movement, scoring, and a 2 player or 1 player mode with an "AI" opponent.  
 - **Adjustable Speeds:** Customize paddle and ball speeds for faster gameplay.  
 - **Dynamic Ball Bounces:** Angled bounces based on where the ball hits the paddle.  
 - **Triple-Y Exit:** Press **Y three times quickly** to **return to the ISS Tracker**.  
