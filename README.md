@@ -24,7 +24,7 @@ Track the **International Space Station's position** on a **world map** and swit
 - **Classic Pong Gameplay:** Paddle movement, scoring, and a 2 player or 1 player mode with an "AI" opponent.  
 - **Adjustable Speeds:** Customize paddle and ball speeds for faster gameplay.  
 - **Dynamic Ball Bounces:** Angled bounces based on where the ball hits the paddle.  
-- **Triple-Y Exit:** Press **Y three times quickly** to **return to the ISS Tracker**.  
+- **Hold X & Y for 2 seconds:** **Exit Pong** and return to **ISS Tracker**.  
 
 ---
 
@@ -37,9 +37,10 @@ Track the **International Space Station's position** on a **world map** and swit
 - **Button Y:** **Placeholder** for future functionality.  
 
 ### Pong Game Controls:
+- **Select Players:** Select 1 or 2 player mode.
 - **Left Button (A):** Move paddle **left**.  
 - **Right Button (B):** Move paddle **right**.  
-- **Triple-Y Press (Y):** **Exit Pong** and return to **ISS Tracker**.  
+- **Hold X & Y for 2 seconds:** **Exit Pong** and return to **ISS Tracker**.  
 
 ---
 
