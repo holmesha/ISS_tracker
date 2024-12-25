@@ -13,7 +13,7 @@ display = PicoGraphics(display=DISPLAY_PICO_DISPLAY_2)
 # Define colors
 BLACK = display.create_pen(0, 0, 0)
 RED = display.create_pen(255, 0, 0)
-GREY = display.create_pen(100, 100, 100)
+GREY = display.create_pen(90, 90, 90)
 
 # Set up buttons with PULL_UP
 button_A = Pin(12, Pin.IN, Pin.PULL_UP)  # Toggle Grid
@@ -81,10 +81,6 @@ def draw_grid():
     for y in range(0, 240, 20):
         display.line(0, y, 320, y)  # Horizontal lines
 
-    # Title text
-    display.set_pen(BLACK)
-    display.text("ISS Tracker", 10, 10, scale=2)
-
 # Draw the ISS path (connect saved points)
 def draw_path():
     display.set_pen(RED)
@@ -100,12 +96,14 @@ def handle_buttons():
     # Toggle Grid (Button A)
     if button_A.value() == 0:
         show_grid = not show_grid
-        time.sleep(0.2)
+        time.sleep(0.1)
+        print("grid toggled")
 
     # Toggle Path (Button B)
     if button_B.value() == 0:
         show_path = not show_path
-        time.sleep(0.2)
+        time.sleep(0.1)
+        print("ISS path toggled")
 
     # Switch to Pong (Button X)
     if button_X.value() == 0:
@@ -113,7 +111,7 @@ def handle_buttons():
 
     # Placeholder for Y Button (ISS mode)
     if button_Y.value() == 0:
-        time.sleep(0.2)
+        time.sleep(0.1)
 
 # Update ISS position and path
 def update_iss():
@@ -148,6 +146,10 @@ def update_iss():
             display.set_pen(BLACK)
             display.text(f"Lat: {lat:.2f}", 10, 200, scale=2)
             display.text(f"Lon: {lon:.2f}", 10, 220, scale=2)
+            
+            # Title text
+            display.set_pen(BLACK)
+            display.text("ISS Tracker", 10, 10, scale=2)
 
             display.update()
             print(f"ISS Position: Lat {lat}, Lon {lon}")
