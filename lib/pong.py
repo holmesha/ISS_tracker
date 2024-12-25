@@ -2,159 +2,199 @@ from machine import Pin
 import time
 from picographics import PicoGraphics, DISPLAY_PICO_DISPLAY_2
 
-# Set up display
+# Setup display
 display = PicoGraphics(display=DISPLAY_PICO_DISPLAY_2)
 
 # Colors
 BLACK = display.create_pen(0, 0, 0)
 WHITE = display.create_pen(255, 255, 255)
 
-# Game Variables
-paddle_width = 60
-paddle_height = 10
+# Paddle settings
+paddle_height = 40
+paddle_width = 5
+paddle_speed = 5
+
+# Ball settings
 ball_size = 5
+ball_speed_x = 3
+ball_speed_y = 2
 
-# Speeds
-paddle_speed = 10    # Adjustable paddle speed
-ball_speed = 8      # Adjustable ball speed (affects dx and dy)
+# Paddle positions (left and right walls)
+left_paddle_y = 100
+right_paddle_y = 100
 
-# Initial positions
-player_x = 130
-opponent_x = 130
-ball_x, ball_y = 160, 120
-ball_dx, ball_dy = ball_speed, ball_speed
+# Ball position and direction
+ball_x = 160  # Start in the middle
+ball_y = 120
+ball_dx = -ball_speed_x  # Always starts toward Player 1
+ball_dy = ball_speed_y
 
-player_score = 0
-opponent_score = 0
-max_score = 11
+# Scores
+left_score = 0
+right_score = 0
 
 # Buttons
-button_left = Pin(12, Pin.IN, Pin.PULL_UP)  # Move paddle left
-button_right = Pin(13, Pin.IN, Pin.PULL_UP)  # Move paddle right
-button_y = Pin(15, Pin.IN, Pin.PULL_UP)  # Triple-Y to exit
+button_A = Pin(12, Pin.IN, Pin.PULL_UP)  # Move left paddle up
+button_B = Pin(13, Pin.IN, Pin.PULL_UP)  # Move left paddle down
+button_X = Pin(14, Pin.IN, Pin.PULL_UP)  # Move right paddle up (2-player mode)
+button_Y = Pin(15, Pin.IN, Pin.PULL_UP)  # Move right paddle down (2-player mode)
 
-# Track Y button presses for exit
-y_press_count = 0
-last_press_time = 0
-exit_press_window = 500  # Milliseconds between presses
+# Player mode (1 or 2)
+player_mode = 1  # Default to 1-player mode
+
+# AI settings (used only in 1-player mode)
+ai_speed = 3  # Speed of AI movement
+
+# X + Y button hold tracking
+exit_hold_start = 0
+
 
 # Draw paddles
-def draw_paddle(x, y):
+def draw_paddles():
     display.set_pen(WHITE)
-    display.rectangle(x, y, paddle_width, paddle_height)
+    display.rectangle(10, left_paddle_y, paddle_width, paddle_height)  # Left paddle
+    display.rectangle(305, right_paddle_y, paddle_width, paddle_height)  # Right paddle
+
 
 # Draw ball
-def draw_ball(x, y):
+def draw_ball():
     display.set_pen(WHITE)
-    display.circle(x, y, ball_size)
+    display.circle(ball_x, ball_y, ball_size)
+
 
 # Draw scores
 def draw_scores():
-    display.set_pen(WHITE)
-    display.text(str(player_score), 10, 10, scale=2)
-    display.text(str(opponent_score), 300, 10, scale=2)
+    display.text(str(left_score), 40, 10, scale=3)
+    display.text(str(right_score), 260, 10, scale=3)
 
-# Reset ball position
-def reset_positions():
+
+# Update ball position
+def update_ball():
+    global ball_x, ball_y, ball_dx, ball_dy, left_score, right_score
+
+    # Move ball
+    ball_x += ball_dx
+    ball_y += ball_dy
+
+    # Ball collision with top and bottom walls
+    if ball_y <= 0 or ball_y >= 240:
+        ball_dy *= -1
+
+    # Ball collision with paddles
+    if (ball_x - ball_size <= 15 and left_paddle_y <= ball_y <= left_paddle_y + paddle_height):
+        ball_dx *= -1
+    elif (ball_x + ball_size >= 305 and right_paddle_y <= ball_y <= right_paddle_y + paddle_height):
+        ball_dx *= -1
+
+    # Score points if ball goes past paddles
+    if ball_x <= 0:
+        right_score += 1
+        reset_ball()
+    elif ball_x >= 320:
+        left_score += 1
+        reset_ball()
+
+
+# Reset ball
+def reset_ball():
     global ball_x, ball_y, ball_dx, ball_dy
     ball_x, ball_y = 160, 120
-    ball_dx, ball_dy = ball_speed, ball_speed
+    ball_dx = -ball_speed_x  # Always start toward Player 1
+    ball_dy = ball_speed_y
 
-# Collision detection
-def ball_hits_paddle(ball_x, ball_y, paddle_x, paddle_y):
-    return (paddle_x <= ball_x <= paddle_x + paddle_width) and \
-           (paddle_y <= ball_y <= paddle_y + paddle_height)
 
-# Pong game loop
-def pong():
-    global player_x, opponent_x, ball_x, ball_y, ball_dx, ball_dy
-    global player_score, opponent_score, y_press_count, last_press_time
+# Update paddles
+def update_paddles():
+    global left_paddle_y, right_paddle_y
 
-    # Reset scores before starting
-    player_score = 0
-    opponent_score = 0
+    # Left paddle controls
+    if button_A.value() == 0 and left_paddle_y > 0:  # Move up
+        left_paddle_y -= paddle_speed
+    if button_B.value() == 0 and left_paddle_y < 200:  # Move down
+        left_paddle_y += paddle_speed
+
+    # Right paddle (AI or manual)
+    if player_mode == 1:  # AI mode
+        if right_paddle_y + paddle_height / 2 < ball_y:
+            right_paddle_y += ai_speed
+        elif right_paddle_y + paddle_height / 2 > ball_y:
+            right_paddle_y -= ai_speed
+    else:  # 2-player mode
+        if button_X.value() == 0 and right_paddle_y > 0:  # Move up
+            right_paddle_y -= paddle_speed
+        if button_Y.value() == 0 and right_paddle_y < 200:  # Move down
+            right_paddle_y += paddle_speed
+
+
+# Display mode selection screen
+def select_mode():
+    global player_mode
+    display.set_pen(BLACK)
+    display.clear()
+    display.set_pen(WHITE)
+    display.text("Select Mode:", 50, 40, scale=3)
+    display.text("A - 1 Player", 50, 100, scale=2)
+    display.text("B - 2 Player", 50, 150, scale=2)
+    display.update()
 
     while True:
-        # Check if Y is pressed 3 times quickly to exit
-        if button_y.value() == 0:
-            current_time = time.ticks_ms()
-            if current_time - last_press_time < exit_press_window:
-                y_press_count += 1
-            else:
-                y_press_count = 1  # Reset count if time exceeds window
-            last_press_time = current_time
+        if button_A.value() == 0:  # 1 Player
+            player_mode = 1
+            break
+        if button_B.value() == 0:  # 2 Players
+            player_mode = 2
+            break
 
-            if y_press_count >= 3:  # Exit Pong
-                reset_positions()
-                return
+    time.sleep(0.5)  # Debounce
 
-        # Clear display
+
+# Check for holding X + Y to exit
+def check_exit():
+    global exit_hold_start
+
+    # Check if both X and Y are pressed
+    if button_X.value() == 0 and button_Y.value() == 0:
+        if exit_hold_start == 0:  # Start timing
+            exit_hold_start = time.ticks_ms()
+        elif time.ticks_diff(time.ticks_ms(), exit_hold_start) > 2000:  # 2 seconds
+            return True
+    else:
+        exit_hold_start = 0  # Reset timer if released
+
+    return False
+
+
+# Main loop
+def pong():
+    global left_score, right_score
+
+    # Select player mode
+    select_mode()
+
+    while True:
+        # Clear the screen
         display.set_pen(BLACK)
         display.clear()
 
-        # Draw paddles
-        draw_paddle(player_x, 220)
-        draw_paddle(opponent_x, 10)
+        # Update game elements
+        update_paddles()
+        update_ball()
 
-        # Draw ball
-        draw_ball(ball_x, ball_y)
-
-        # Draw scores
+        # Draw game elements
+        draw_paddles()
+        draw_ball()
         draw_scores()
 
-        # Update ball position
-        ball_x += ball_dx
-        ball_y += ball_dy
-
-        # Ball collision with walls
-        if ball_x <= 0:  # Left wall
-            ball_dx = abs(ball_dx)  # Ensure positive direction
-            ball_x += 1  # Nudge ball inward
-        elif ball_x >= 315:  # Right wall
-            ball_dx = -abs(ball_dx)  # Ensure negative direction
-            ball_x -= 1  # Nudge ball inward
-
-        # Ball collision with paddles
-        if ball_hits_paddle(ball_x, ball_y, player_x, 220):  # Player paddle
-            ball_dy = -abs(ball_dy)  # Ensure upward direction
-            offset = (ball_x - (player_x + paddle_width / 2)) / (paddle_width / 2)
-            ball_dx = int(ball_speed * offset)
-
-        if ball_hits_paddle(ball_x, ball_y, opponent_x, 10):  # Opponent paddle
-            ball_dy = abs(ball_dy)  # Ensure downward direction
-            offset = (ball_x - (opponent_x + paddle_width / 2)) / (paddle_width / 2)
-            ball_dx = int(ball_speed * offset)
-
-        # Ball out of bounds (scores)
-        if ball_y > 240:  # Player missed
-            opponent_score += 1
-            reset_positions()
-        elif ball_y < 0:  # Opponent missed
-            player_score += 1
-            reset_positions()
-
-        # Move player's paddle
-        if button_left.value() == 0:
-            player_x = max(0, player_x - paddle_speed)
-        if button_right.value() == 0:
-            player_x = min(260, player_x + paddle_speed)
-
-        # AI Opponent movement (tracks ball)
-        if opponent_x + paddle_width / 2 < ball_x:
-            opponent_x = min(260, opponent_x + 3)
-        elif opponent_x + paddle_width / 2 > ball_x:
-            opponent_x = max(0, opponent_x - 3)
-
-        # Check for max score
-        if player_score >= max_score or opponent_score >= max_score:
-            reset_positions()
-            return  # Exit Pong and return to ISS Tracker
-
-        # Update display
+        # Update the display
         display.update()
-        time.sleep(0.03)
 
-# If running standalone
-if __name__ == "__main__":
-    display.set_backlight(1.0)  # Turn on backlight
-    pong()
+        # Check for exit using X + Y hold
+        if check_exit():
+            break
+
+        # Delay for smooth gameplay
+        time.sleep(0.05)
+
+    # Return to ISS Tracker after game ends
+    reset_ball()
+
