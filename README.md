@@ -59,7 +59,7 @@ Track the **International Space Station's position** on a **world map** and swit
 ├── worldmap.png        # Background world map for ISS Tracker
 ├── main.py             # Main ISS Tracker program
 └── README.md           # Project documentation
-
+/
 ---
 
 ## 🚀 Usage
@@ -132,6 +132,8 @@ Replace "your-wifi-name" and "your-wifi-password" with your network details.
 - Select the **MicroPython (Raspberry Pi Pico)** interpreter.
 - Open `main.py` and click **Run**. *note: if you call this file main.py, it should just load by itself.*
 
+---
+
 # 🚀 Usage
 
 - **Power On**: Connect the Pico W to power via USB.
@@ -145,6 +147,8 @@ Replace "your-wifi-name" and "your-wifi-password" with your network details.
 - Press **X** to launch the Pong game.
 - Use **left** (A) and **right** (B) buttons to move the paddle and score points.
 - Press **Y** three times quickly to exit Pong and return to the ISS Tracker.
+
+---
 
 # 🧑‍💻 Contributing
 
@@ -161,6 +165,8 @@ Pull requests are welcome!
   ```bash
   git push origin feature/your-feature
 5. **Open** a pull request
+
+---
 
 # 📜 License
 
