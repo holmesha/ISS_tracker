@@ -110,14 +110,14 @@ if len(iss_path) > 50:  # Limit to 50 points
 
 3. Set Up Wi-Fi Credentials
 
-Create a file named `secrets.py` inside the `lib/` folder:
+- Create a file named `secrets.py` inside the `lib/` folder:
 ```python
 secrets = {
     "ssid": "your-wifi-name",
     "password": "your-wifi-password"
 }
-
-Replace "your-wifi-name" and "your-wifi-password" with your network details.
+```
+- Replace "your-wifi-name" and "your-wifi-password" with your network details.
 
 4. Upload Map Image
 
