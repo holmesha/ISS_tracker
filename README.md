@@ -83,13 +83,13 @@ Modify these variables in **`pong.py`**:
 ```python
 paddle_speed = 5    # Paddle speed
 ball_speed = 3      # Ball speed
-
+```
 ### Path Memory Length:
 Adjust path length in main.py:
 ```python
 if len(iss_path) > 50:  # Limit to 50 points
     iss_path.pop(0)
-
+```
 ## 📝 Installation Instructions
 
 1. **Download and Prepare Files**
