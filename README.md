@@ -1,5 +1,7 @@
 # 🚀 ISS Tracker & Pong Game for Pico Display 2.8"
 
+![ISS Tracker](https://github.com/holmesha/ISS_tracker/blob/main/IMG_6613.jpg)
+
 This project combines **real-time ISS tracking** with a **classic Pong game**, running on the **Pimoroni Pico Display Pack 2.8"**.  
 
 Track the **International Space Station's position** on a **world map** and switch to **Pong** for a quick game—all controlled using the buttons on the display!  
