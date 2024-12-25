@@ -59,7 +59,7 @@ Track the **International Space Station's position** on a **world map** and swit
 ├── worldmap.png        # Background world map for ISS Tracker
 ├── main.py             # Main ISS Tracker program
 └── README.md           # Project documentation
-/
+```
 ---
 
 ## 🚀 Usage
@@ -101,9 +101,9 @@ if len(iss_path) > 50:  # Limit to 50 points
 2. Install Pimoroni MicroPython Firmware
 
 - Download the Pimoroni Pico W MicroPython firmware from:  
-  [Pimoroni Firmware Releases](https://github.com/pimoroni/pimoroni-pico/releases)
-- Flash the firmware onto your Pico W:
-  1. Hold the **BOOTSEL** button on the Pico W.
+  [Pimoroni Firmware Releases](https://github.com/pimoroni/pimoroni-pico-rp2350/releases)
+- Flash the firmware onto your Pico 2W:
+  1. Hold the **BOOTSEL** button on the Pico 2W.
   2. Connect it to your computer via USB.
   3. Release the **BOOTSEL** button once it mounts as a drive.
   4. Drag and drop the downloaded `.uf2` file onto the drive.
