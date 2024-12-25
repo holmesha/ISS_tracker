@@ -57,8 +57,8 @@ Track the **International Space Station's position** on a **world map** and swit
 ```plaintext
 /
 ├── lib/
-│   ├── pong.py         # Pong game module
-│   └── secrets.py      # Wi-Fi credentials (not included in repo)
+│   └── pong.py         # Pong game module
+├── secrets.py          # Wi-Fi credentials (not included in repo)
 ├── worldmap.png        # Background world map for ISS Tracker
 ├── main.py             # Main ISS Tracker program
 └── README.md           # Project documentation
