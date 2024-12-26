@@ -177,3 +177,8 @@ Pull requests are welcome!
 # 📜 License
 
 This project is licensed under the **MIT License**.  
+
+
+# Handy Resources
+
+- [Official Picographics Repo](https://github.com/pimoroni/pimoroni-pico/blob/main/micropython/modules/picographics/README.md#jpeg-files)
