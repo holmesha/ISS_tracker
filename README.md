@@ -1,4 +1,4 @@
-# 🚀 ISS Tracker & Pong Game for Pico Display 2.8"
+# 🚀 ISS Space Station Tracker & Pong Game for Pico Display 2.8"
 
 ![ISS Tracker](https://github.com/holmesha/ISS_tracker/blob/main/IMG_6613.jpg)
 
